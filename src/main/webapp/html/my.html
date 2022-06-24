@@ -1,11 +1,163 @@
 <html>
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta name="description" content="" />
     <title>RPG</title>
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
     <link href="/css/my.css" rel="stylesheet">
 </head>
 <body>
 <h1>RPG admin panel</h1>
-
+<br />
+<h3>Account List</h3>
+<p>
+    <label>Select pagination count:</label>
+    <select id="pagination-select">
+        <option selected value="3">3</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+    </select>
+</p>
+<table id="account-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Race</th>
+            <th>Profession</th>
+            <th>Level</th>
+            <th>Birthday</th>
+            <th>Banned</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--    Async Content Here-->
+    </tbody>
+</table>
+<div class="pagination" id="pagination">
+    <p></p>
+</div>
 </body>
+<script>
+
+    let playersCount = 0;
+
+    getPlayersCount();
+
+    $(document).ready(function() {
+
+        getPlayers(null, null);
+        deleteClick();
+        $('#pagination-select').on('change', function () {
+            //ways to retrieve selected option and text outside handler
+            // console.log('Changed option value ' + this.value);
+            // console.log('Changed option text ' + $(this).find('option').filter(':selected').text());
+            getPlayers(null, this.value);
+
+            //paginationClick();
+        });
+
+        //paginationClick();
+
+    });
+
+    function getPlayersCount() {
+        $.ajax({
+            type: "GET",
+            url: "/rest/players/count",
+            cache: false,
+            async: false,
+            success: function (data) {
+                playersCount = data;
+            }
+        });
+    }
+
+    function getPlayers(pageNumber = null, pageSize = null) {
+
+        let getUri;
+        let row = "";
+        let pagesCount;
+        let pagesRow = "";
+        if (pageNumber == null) {
+            if (pageSize == null) {
+                getUri = "/rest/players";
+                pageSize = 3;
+            } else {
+                getUri = "/rest/players?pageSize=" + pageSize;
+            }
+        } else {
+            getUri = "/rest/players?pageNumber=" + pageNumber + "&pageSize=" + pageSize;
+        }
+
+        if (pageSize == null) {
+            pagesCount = Math.ceil(playersCount/3);
+        } else {
+            pagesCount = Math.ceil(playersCount/pageSize);
+        }
+
+        console.log(getUri);
+        console.log(playersCount);
+        console.log(pagesCount);
+
+        $.get(getUri, function(data){
+            for (let i = 0; i < data.length; i++) {
+                let id = data[i].id;
+                let name = data[i].name;
+                let title = data[i].title;
+                let race = data[i].race;
+                let profession = data[i].profession;
+                let birthday = data[i].birthday;
+                let banned = data[i].banned;
+                let level = data[i].level;
+
+                row += "<tr>" +
+                    "<td>" + id + "</td>" + "<td>" + name + "</td>" + "<td>" + title + "</td>" +
+                    "<td>" + race + "</td>" + "<td>" + profession + "</td>" + "<td>" + birthday + "</td>" +
+                    "<td>" + banned + "</td>" + "<td>" + level + "</td>" + "<td>Edit</td>" +
+                    "<td><a href='#' class='' id='' data-id='"+ id +"' >Delete</a></td>" +
+                    "</tr>";
+                $("#account-table tbody").html(row);
+                deleteClick();
+            }
+        });
+
+        if (pagesCount > 0) {
+            pagesRow += "Pages: ";
+            for (let i = 0; i < pagesCount; i++) {
+                let page = i + 1;
+                pagesRow +=
+                    "<a href='#' class='pageLoad' data-pageNumber='" + i + "' data-pageSize='" + pageSize+"'>" + page + "</a>";
+            }
+            $("#pagination p").html(pagesRow);
+        }
+        paginationClick();
+
+    }
+
+    function paginationClick() {
+        $("#pagination p a").unbind("click");
+        $("#pagination p a").bind("click", function () {
+            $pageNumber = $(this).attr("data-pageNumber");
+            $pageSize = $(this).attr("data-pageSize");
+            console.log("data-pageNumber - " + $pageNumber + " data-pageSize - " +$pageSize);
+            getPlayers($pageNumber, $pageSize);
+        });
+    }
+
+    function deleteClick() {
+        //$("#toDel").unbind("click");
+        $(".toDel").bind("click", function () {
+            console.log("delete-Work!")
+        });
+    }
+</script>
 </html>
