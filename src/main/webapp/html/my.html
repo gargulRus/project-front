@@ -10,6 +10,7 @@
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
     <link href="/css/my.css" rel="stylesheet">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/icons/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -21,20 +22,21 @@
         <div class="col"></div>
     </div>
     <div class="row">
-        <div class="col"></div>
         <div class="col">
             <h3>Account List</h3>
         </div>
         <div class="col"></div>
+        <div class="col">
+            <h4>Create New Account:</h4>
+        </div>
     </div>
-    <br />
 </div>
 <div class="container">
     <div class="row">
         <div class="col">
             <p>
-                <label>Select pagination count:</label>
-                <select id="pagination-select">
+                <label class="col-form-label-sm" for="pagination-select">Select pagination count:</label>
+                <select class="form-select form-select-sm w-25" id="pagination-select">
                     <option selected value="3">3</option>
                     <option value="10">10</option>
                     <option value="15">15</option>
@@ -51,104 +53,113 @@
         </div>
         <div class="col"></div>
     </div>
-    <br />
 </div>
-<table class="account-table table table-hover" id="account-table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Title</th>
-            <th>Race</th>
-            <th>Profession</th>
-            <th>Level</th>
-            <th>Birthday</th>
-            <th>Banned</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody id="tBodyId">
-        <!--    Async Content Here-->
-    </tbody>
-</table>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <label class="label-alert"  id="editAlertName"></label>
+            <label class="label-alert"  id="editAlertTitle"></label>
+            <div class="table-body-scroll">
+                <table class="account-table table table-hover" id="account-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Race</th>
+                        <th>Profession</th>
+                        <th>Level</th>
+                        <th>Birthday</th>
+                        <th>Banned</th>
+                        <th> </th>
+                        <th> </th>
+                    </tr>
+                    </thead>
+                    <tbody id="tBodyId">
+                    <!--Async Content Here-->
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" id="pagination">
+                <p><!--Pagination Content Here--></p>
+            </div>
+        </div>
+        <div class="col">
+            <form id="newCharForm">
+                <label class="col-form-label-sm" for="newCharName">Name:</label>
+                <input class="form-control form-control-sm" type="text" id="newCharName" size="20" name="newCharName" value="" placeholder="Enter new Name">
+                <label class="label-alert" id="newCharNameAlert"></label>
+                <label class="col-form-label-sm" for="newCharTitle">Title:</label>
+                <input class="form-control form-control-sm" type="text" id="newCharTitle" size="30" name="newCharTitle" value="" placeholder="Enter new Title">
+                <label class="label-alert" id="newCharTitleAlert"></label>
+                <label class="col-form-label-sm" for="newCharRaceSelect">Race:</label>
+                <select class="form-select form-select-sm" id="newCharRaceSelect">
+                    <option value="HUMAN">HUMAN</option>
+                    <option value="DWARF">DWARF</option>
+                    <option value="ELF">ELF</option>
+                    <option value="GIANT">GIANT</option>
+                    <option value="ORC">ORC</option>
+                    <option value="TROLL">TROLL</option>
+                    <option value="HOBBIT">HOBBIT</option>
+                </select>
+                <label class="col-form-label-sm" for="newCharProfessionSelect">Profession:</label>
+                <select class="form-select form-select-sm" id="newCharProfessionSelect">
+                    <option value="WARRIOR">WARRIOR</option>
+                    <option value="ROGUE">ROGUE</option>
+                    <option value="SORCERER">SORCERER</option>
+                    <option value="CLERIC">CLERIC</option>
+                    <option value="PALADIN">PALADIN</option>
+                    <option value="NAZGUL">NAZGUL</option>
+                    <option value="WARLOCK">WARLOCK</option>
+                    <option value="DRUID">DRUID</option>
+                </select>
+                <label class="col-form-label-sm" for="newCharLevel">Level:</label>
+                <input class="form-control form-control-sm" type="text" id="newCharLevel" size="20" name="newCharTitle" value="" placeholder="Enter level">
+                <label class="label-alert" id="newCharLevelAlert"></label>
+                <label class="col-form-label-sm" for="newCharBirthday">Birthday:</label>
+                <input class="form-control" type="date" id="newCharBirthday">
+                <label class="label-alert"  id="newCharBirthdayAlert"></label>
+                <label class="col-form-label-sm" for="newCharBanned">Banned:</label>
+                <select class="form-select form-select-sm" id="newCharBanned">
+                    <option value="false">false</option>
+                    <option value="true">true</option>
+                </select>
+                <div class="mb-3">
+                </div>
+                <a href="#" class="btn btn-sm btn-primary" id="saveNewChar">Save New Char</a>
+            </form>
+        </div>
+    </div>
+</div>
 <input type="hidden" id="pageSizeHidden" value="3">
 <input type="hidden" id="pageNumberHidden" value="0">
-<div class="pagination" id="pagination">
-    <p></p>
-</div>
-<br/>
 <hr>
-<h3>Create New Account:</h3>
-<form id="newCharForm">
-    <label for="newCharName">Name:</label>
-    <input type="text" id="newCharName" size="20" name="newCharName" value="" placeholder="Enter new Name">
-    <label id="newCharNameAlert"></label>
-    <br>
-    <label for="newCharTitle">Title:</label>
-    <input type="text" id="newCharTitle" size="30" name="newCharTitle" value="" placeholder="Enter new Title">
-    <label id="newCharTitleAlert"></label>
-    <br>
-    <label for="newCharRaceSelect">Race:</label>
-    <select id="newCharRaceSelect">
-        <option value="HUMAN">HUMAN</option>
-        <option value="DWARF">DWARF</option>
-        <option value="ELF">ELF</option>
-        <option value="GIANT">GIANT</option>
-        <option value="ORC">ORC</option>
-        <option value="TROLL">TROLL</option>
-        <option value="HOBBIT">HOBBIT</option>
-    </select>
-    <br>
-    <label for="newCharProfessionSelect">Profession:</label>
-    <select id="newCharProfessionSelect">
-        <option value="WARRIOR">WARRIOR</option>
-        <option value="ROGUE">ROGUE</option>
-        <option value="SORCERER">SORCERER</option>
-        <option value="CLERIC">CLERIC</option>
-        <option value="PALADIN">PALADIN</option>
-        <option value="NAZGUL">NAZGUL</option>
-        <option value="WARLOCK">WARLOCK</option>
-        <option value="DRUID">DRUID</option>
-    </select>
-    <br>
-    <label for="newCharLevel">Level:</label>
-    <input type="text" id="newCharLevel" size="20" name="newCharTitle" value="" placeholder="Enter level">
-    <label id="newCharLevelAlert"></label>
-    <br>
-    <label for="newCharBirthday">Birthday:</label>
-    <input type="date" id="newCharBirthday">
-    <label id="newCharBirthdayAlert"></label>
-    <br>
-    <label for="newCharBanned">Banned:</label>
-    <select id="newCharBanned">
-        <option value="false">false</option>
-        <option value="true">true</option>
-    </select>
-    <br>
-    <a href="#" id="saveNewChar">Save New Char</a>
-</form>
 </body>
 <script src="/js/my.js"></script>
 <script>
-
+    // Глобальная переменная количества игроков. Нужна всегда.
     let playersCount = 0;
-
+    /*
+        Получаем количество игроков синхронной функцией,
+        что бы она гарантированно сработала в этот момент.
+     */
     getPlayersCount();
-
+    //Ждем загрузку всего DOM
     $(document).ready(function() {
-
+        /*
+            Вызываем функцию получения данных игроков и их отображения.
+            Принимает в себя значения - pageNumber и pageSize. По умолчанию - null.
+         */
         getPlayers(null, null);
-
+        //Отслеживаем пагинацию
         $('#pagination-select').on('change', function () {
             $("#pageNumberHidden").val(0);
             $("#pageSizeHidden").val(this.value);
             getPlayers(null, this.value);
         });
-
+        // Вешаем обработчик кнопки Сохранения Нового Персонажа
         saveNewChar();
 
     });
-
 </script>
 </html>

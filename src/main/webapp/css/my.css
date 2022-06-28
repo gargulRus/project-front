@@ -24,3 +24,17 @@ td {
 }
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
+.label-alert {
+    display: grid !important;
+}
+
+.table-body-scroll{
+    max-height: clamp(28em,10vh,250px);
+    overflow: auto;
+}
+
+.btn-custom-color-size{
+    font-size: x-large;
+    color:  #d90c0c;
+}
